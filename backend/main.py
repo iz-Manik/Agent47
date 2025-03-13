@@ -7,6 +7,7 @@ import traceback
 
 app = FastAPI()
 
+# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -22,27 +23,58 @@ async def add_security_headers(request, call_next):
     response.headers["Content-Security-Policy"] = "script-src 'self' 'unsafe-inline' 'unsafe-eval' data:"
     return response
 
-@app.get("/news")
-def get_news(tone: str = "neutral"):
+# Global cache for storing fetched news
+cached_news = []
+
+def load_news():
+    """Fetch news once and store in cached_news."""
+    global cached_news
     try:
         urls = fetch_news()  # Get only URLs from the scraper
-        processed_news = []
+        cached_news = []
 
         for url in urls:
-            title,author,publish_date,summary = summarize_article(url)
-            final_text = change_tone(summary, tone)
+            title, author, publish_date, summary = summarize_article(url)
 
-            processed_news.append({
+            cached_news.append({
                 "title": title,
-                "summary": final_text,
+                "neutral_summary": summary,  # Store neutral summary
                 "url": url,
                 "author": author,
                 "publish_date": publish_date
+            })
+    except Exception as e:
+        traceback.print_exc()
+        cached_news = []
+
+@app.on_event("startup")
+def fetch_initial_news():
+    """Fetch news when the server starts."""
+    load_news()
+
+@app.get("/news")
+def get_news(tone: str = "neutral"):
+    try:
+        if not cached_news:
+            load_news()
+
+        processed_news = []
+
+        for item in cached_news:
+            if tone == "neutral":
+                final_text = item["neutral_summary"]
+            else:
+                final_text = change_tone(item["neutral_summary"], tone)
+
+            processed_news.append({
+                "title": item["title"],
+                "summary": final_text,
+                "url": item["url"],
+                "author": item["author"],
+                "publish_date": item["publish_date"]
             })
 
         return {"news": processed_news}
     except Exception as e:
         traceback.print_exc()
         return {"error": str(e)}
-
-# Start server with: uvicorn main:app --reload
