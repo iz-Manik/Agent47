@@ -29,13 +29,15 @@ def get_news(tone: str = "neutral"):
         processed_news = []
 
         for url in urls:
-            title,summary = summarize_article(url)
+            title,author,publish_date,summary = summarize_article(url)
             final_text = change_tone(summary, tone)
 
             processed_news.append({
                 "title": title,
                 "summary": final_text,
-                "url": url
+                "url": url,
+                "author": author,
+                "publish_date": publish_date
             })
 
         return {"news": processed_news}

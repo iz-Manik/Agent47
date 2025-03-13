@@ -2,7 +2,7 @@ from telegram import Bot, Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 import requests
 
-TOKEN = "7632568403:AAFZou_qAAuN89wwJgzeE_cwstp-AIbw5m4"
+TOKEN = "Token_key"
 
 # Allowed tone values
 def get_news(update: Update, context: CallbackContext):

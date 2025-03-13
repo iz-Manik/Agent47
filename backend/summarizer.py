@@ -101,7 +101,7 @@ def summarize_article(url):
     model, tokenizer, device = load_model()
     article_title,article_author,article_publish_date,article_publisher,article_text = fetch_article(url)
     if article_text:
-        return article_title,summarize_text(article_text, model, tokenizer, device)
+        return article_title,article_author,article_publish_date,summarize_text(article_text, model, tokenizer, device)
     return "Failed to fetch or summarize the article."
 
 def main():
