@@ -3,6 +3,11 @@ import newspaper
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from urllib.parse import urlparse
+from huggingface_hub import hf_hub_download
+
+# Initialize session state for model and tokenizer
+MODEL_REPO = "iz-manik/summarize"  # Change this to your Hugging Face repo name
+MODEL_FILENAME = "abstractive-model-sihanas.pth"  # Ensure this is the correct filename
 
 # Initialize session state for model and tokenizer
 if 'model' not in st.session_state:
@@ -13,15 +18,16 @@ if 'tokenizer' not in st.session_state:
 @st.cache_resource
 def load_model():
     try:
-        # Check if CUDA is available
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-        # Load the model
+        # Download the model from Hugging Face
+        model_path = hf_hub_download(repo_id=MODEL_REPO, filename=MODEL_FILENAME)
+
+        # Load the T5 base model
         model = T5ForConditionalGeneration.from_pretrained('t5-base')
 
-        # Load the saved weights with appropriate map_location
-        checkpoint = torch.load('abstractive-model-sihanas.pth', map_location=device)
-
+        # Load the weights
+        checkpoint = torch.load(model_path, map_location=device)
         model.load_state_dict(checkpoint)
         model.to(device)
 

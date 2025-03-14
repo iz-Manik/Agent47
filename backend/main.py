@@ -1,8 +1,10 @@
 from fastapi import FastAPI
-from scraper import fetch_news
 from summarizer import summarize_article
 from tone_changer import change_tone
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+import os
+import requests
 import traceback
 
 app = FastAPI()
@@ -25,6 +27,20 @@ async def add_security_headers(request, call_next):
 
 # Global cache for storing fetched news
 cached_news = []
+
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")  # Fetch API key from .env file
+
+
+def fetch_news():
+    url = f"https://newsapi.org/v2/everything?q=Donald+Trump&apiKey={API_KEY}"
+    response = requests.get(url).json()
+    articles = response.get("articles", [])
+
+    news_urls = [item["url"] for item in articles[:10] if "url" in item]
+    return news_urls
+
 
 def load_news():
     """Fetch news once and store in cached_news."""
