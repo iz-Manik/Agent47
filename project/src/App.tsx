@@ -45,7 +45,7 @@ function App() {
     setError(null);
 
     try {
-      const response = await fetch(`https://agent-us-backend-5.onrender.com/news?tone=${selectedTone}`);
+      const response = await fetch(`https://agent-47.onrender.com/news?tone=${selectedTone}`);
       if (!response.ok) throw new Error("Failed to fetch news");
       const data = await response.json();
 
@@ -162,22 +162,22 @@ function App() {
 
   const renderHomeContent = () => (
     <>
-      <header className="text-center mb-12 relative">
-        <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 mb-4">
+      <header className="text-center mb-8 sm:mb-12 relative">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 mb-2 sm:mb-4">
           Latest Trump News
         </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           Stay updated with AI-generated news coverage
         </p>
-        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
+        <div className="absolute -top-6 sm:-top-8 left-1/2 transform -translate-x-1/2 w-12 sm:w-20 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <aside className="lg:col-span-1">
+        <aside className="lg:col-span-1 order-2 lg:order-1 mb-6 lg:mb-0">
           <FilterPanel onFilterChange={handleFilterChange} />
         </aside>
 
-        <main className="lg:col-span-3">
+        <main className="lg:col-span-3 order-1 lg:order-2">
           {error && (
             <div className="flex items-center gap-2 bg-red-50 dark:bg-red-900/50 text-red-700 dark:text-red-200 p-4 rounded-lg mb-6">
               <AlertCircle className="w-5 h-5" />
@@ -218,35 +218,35 @@ function App() {
             ) : (
               filteredNews.map((item, index) => (
                 <article
-                  key={index}
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  <div className="p-8">
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
-                      <div className="flex items-center gap-1">
-                        <User className="w-4 h-4" />
-                        <span>{item.publisher}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        <span>{formatDate(item.publishDate)}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                          item.status === "verified"
-                            ? "bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300"
-                            : "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300"
-                        }`}>
-                          {item.status?.charAt(0).toUpperCase() + item.status?.slice(1)}
-                        </span>
-                        <span className="inline-block px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 text-xs font-medium">
-                          {tone.charAt(0).toUpperCase() + tone.slice(1)}
-                        </span>
-                      </div>
+                key={index}
+                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="p-4 sm:p-6 md:p-8">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    <div className="flex items-center gap-1 mb-1 sm:mb-0">
+                      <User className="w-4 h-4" />
+                      <span className="truncate">{item.publisher}</span>
                     </div>
+                    <div className="flex items-center gap-1 mb-1 sm:mb-0">
+                      <Calendar className="w-4 h-4" />
+                      <span className="truncate">{formatDate(item.publishDate)}</span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 mb-1 sm:mb-0">
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                        item.status === "verified"
+                          ? "bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300"
+                          : "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300"
+                      }`}>
+                        {item.status?.charAt(0).toUpperCase() + item.status?.slice(1)}
+                      </span>
+                      <span className="inline-block px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 text-xs font-medium">
+                        {tone.charAt(0).toUpperCase() + tone.slice(1)}
+                      </span>
+                    </div>
+                  </div>
 
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">{item.title}</h2>
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">{item.summary}</p>
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-4 leading-tight">{item.title}</h2>
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed mb-4 sm:mb-6">{item.summary}</p>
 
                     {item.url && (
                       <a
@@ -272,7 +272,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-200">
       {showNotification && (
-        <div className="fixed top-20 right-4 z-50 w-96 overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow-xl animate-slide-in-right">
+        <div className="fixed top-16 sm:top-20 right-2 sm:right-4 z-50 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow-xl animate-slide-in-right">
           <div className="p-4">
             <div className="flex items-start">
               <div className="flex-shrink-0 mr-3">
@@ -310,19 +310,19 @@ function App() {
 
       <nav className="bg-white/90 dark:bg-gray-900/90 shadow-md sticky top-0 z-50 backdrop-blur-sm transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
+          <div className="flex justify-between h-auto py-2 md:h-16 items-center">
             <div className="flex items-center">
               {/* Logo section */}
-              <div className="flex items-center gap-2 mr-6">
-                <Newspaper className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                <span className="text-2xl font-bold text-gray-900 dark:text-white">Trump AI News</span>
+              <div className="flex items-center gap-2 mr-4">
+                <Newspaper className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600 dark:text-indigo-400" />
+                <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Trump AI News</span>
               </div>
 
-              {/* Navigation buttons moved here, right next to the logo */}
-              <div className="flex space-x-4">
+              {/* Navigation buttons right next to the logo */}
+              <div className="flex space-x-2 sm:space-x-4">
                 <button
                   onClick={() => setCurrentView("home")}
-                  className={`px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 ${
+                  className={`px-2 py-1 sm:px-4 sm:py-2 rounded-lg transition-all duration-300 flex items-center gap-1 sm:gap-2 text-sm sm:text-base ${
                     currentView === "home"
                       ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
                       : "bg-white/10 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
@@ -333,7 +333,7 @@ function App() {
                 </button>
                 <button
                   onClick={() => setCurrentView("about")}
-                  className={`px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 ${
+                  className={`px-2 py-1 sm:px-4 sm:py-2 rounded-lg transition-all duration-300 flex items-center gap-1 sm:gap-2 text-sm sm:text-base ${
                     currentView === "about"
                       ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
                       : "bg-white/10 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
@@ -345,9 +345,10 @@ function App() {
               </div>
             </div>
 
-            {/* Right side elements remain unchanged */}
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
+            {/* Right side controls */}
+            <div className="flex items-center gap-2 sm:gap-4">
+              {/* Update time info - hide on smaller screens */}
+              <div className="hidden md:flex items-center gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   <span>Last updated: {formatLastUpdated(lastUpdated)}</span>
@@ -357,6 +358,8 @@ function App() {
                   <span>Next update in: {formatNextUpdate(nextUpdateIn)}</span>
                 </div>
               </div>
+
+              {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
@@ -364,10 +367,12 @@ function App() {
               >
                 {theme === "light" ? <Moon className="w-5 h-5 text-gray-600" /> : <Sun className="w-5 h-5 text-yellow-400" />}
               </button>
+
+              {/* Tone selector */}
               <select
                 onChange={(e) => setTone(e.target.value)}
                 value={tone}
-                className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-2 py-1 sm:px-3 sm:py-2 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="neutral">📰 Neutral</option>
                 <option value="satirical">😏 Satirical</option>
